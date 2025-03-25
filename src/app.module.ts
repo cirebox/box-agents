@@ -8,7 +8,7 @@ import { AgentsModule } from './modules/agents/agents.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Torna as configurações globais (opcional)
+      isGlobal: true,
     }),
     SharedModule,
     AgentsModule,

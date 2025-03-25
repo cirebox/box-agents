@@ -20,7 +20,7 @@ export class UpdateAgentService {
     private agentManagerService: AgentManagerService,
     @Inject('IAgentRepository')
     private agentRepository: IAgentRepository,
-  ) { }
+  ) {}
 
   async execute(params: UpdateAgentParams): Promise<void> {
     this.logger.log(`Updating agent with ID: ${params.id}`);

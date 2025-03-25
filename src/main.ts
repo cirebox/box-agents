@@ -9,6 +9,7 @@ import { join } from 'path';
 import * as basicAuth from 'express-basic-auth';
 
 import { config } from 'dotenv-safe';
+import { Transport } from '@nestjs/microservices';
 config();
 
 async function bootstrap() {
@@ -18,6 +19,19 @@ async function bootstrap() {
     //   logger: LoggerFactory(),
     // },
   );
+
+  // Configuração do microserviço RabbitMQ
+  app.connectMicroservice({
+    transport: Transport.RMQ,
+    options: {
+      urls: [process.env.RABBITMQ_URL || 'amqp://guest:guest@localhost:5672'],
+      queue: 'ai_agents_queue',
+      queueOptions: {
+        durable: true,
+      },
+      prefetchCount: 1,
+    },
+  });
 
   // Configura a pasta pública para servir arquivos estáticos
   app.use('/assets', express.static(join(__dirname, '..', 'public/assets')));

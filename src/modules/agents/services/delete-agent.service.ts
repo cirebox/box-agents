@@ -6,8 +6,10 @@ import { IAgentRepository } from 'src/shared/repositories/interfaces/iagent.repo
 export class DeleteAgentService {
   private readonly logger = new Logger(DeleteAgentService.name);
 
-  constructor(@Inject('IAgentRepository')
-  private agentRepository: IAgentRepository,) { }
+  constructor(
+    @Inject('IAgentRepository')
+    private agentRepository: IAgentRepository,
+  ) {}
 
   async execute(id: string): Promise<void> {
     this.logger.log(`Deleting agent with ID: ${id}`);

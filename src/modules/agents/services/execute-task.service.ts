@@ -1,5 +1,5 @@
 // src/modules/agents/services/execute-task.service.ts
-import { Injectable, Logger, } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { AgentExecutorService } from './agent-executor.service';
 
 interface ExecuteTaskParams {
@@ -24,7 +24,7 @@ interface ExecuteFullStackTaskParams {
 export class ExecuteTaskService {
   private readonly logger = new Logger(ExecuteTaskService.name);
 
-  constructor(private agentExecutorService: AgentExecutorService) { }
+  constructor(private agentExecutorService: AgentExecutorService) {}
 
   async execute(params: ExecuteTaskParams): Promise<any> {
     this.logger.log(

@@ -6,8 +6,10 @@ import { IAgentRepository } from 'src/shared/repositories/interfaces/iagent.repo
 export class FindAgentService {
   private readonly logger = new Logger(FindAgentService.name);
 
-  constructor(@Inject('IAgentRepository')
-      private agentRepository: IAgentRepository,) {}
+  constructor(
+    @Inject('IAgentRepository')
+    private agentRepository: IAgentRepository,
+  ) {}
 
   async findById(id: string): Promise<any> {
     this.logger.log(`Finding agent with ID: ${id}`);

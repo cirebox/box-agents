@@ -7,4 +7,4 @@ import { SharedModule } from 'src/shared/shared.module';
   imports: [TerminusModule, SharedModule],
   controllers: [HealthController],
 })
-export class HealthModule { }
+export class HealthModule {}

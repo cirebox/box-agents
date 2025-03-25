@@ -50,7 +50,10 @@ type PromptTemplate =
 @Injectable()
 export class PromptEngineeringHelper {
   private readonly logger = new Logger(PromptEngineeringHelper.name);
-  private readonly templateBasePath = join(process.cwd(), 'src/shared/templates/prompts');
+  private readonly templateBasePath = join(
+    process.cwd(),
+    'src/shared/templates/prompts',
+  );
   private templateCache: Map<string, string> = new Map();
 
   /**
@@ -74,7 +77,9 @@ export class PromptEngineeringHelper {
 
       return template;
     } catch (error) {
-      this.logger.error(`Error loading template ${templateName}: ${error.message}`);
+      this.logger.error(
+        `Error loading template ${templateName}: ${error.message}`,
+      );
       throw new Error(`Failed to load prompt template: ${templateName}`);
     }
   }
@@ -85,7 +90,10 @@ export class PromptEngineeringHelper {
    * @param variables Variáveis para substituir no template
    * @returns Template com variáveis substituídas
    */
-  getPromptFromTemplate(templateName: PromptTemplate, variables: Record<string, string>): string {
+  getPromptFromTemplate(
+    templateName: PromptTemplate,
+    variables: Record<string, string>,
+  ): string {
     try {
       let template = this.loadTemplate(templateName);
 
@@ -97,7 +105,9 @@ export class PromptEngineeringHelper {
 
       return template;
     } catch (error) {
-      this.logger.error(`Error processing template ${templateName}: ${error.message}`);
+      this.logger.error(
+        `Error processing template ${templateName}: ${error.message}`,
+      );
       throw error;
     }
   }
@@ -140,7 +150,9 @@ export class PromptEngineeringHelper {
     frameworks: string = '',
     requirements: string = '',
   ): string {
-    this.logger.debug(`Building code generation prompt for language: ${language}`);
+    this.logger.debug(
+      `Building code generation prompt for language: ${language}`,
+    );
 
     return this.getPromptFromTemplate('code-generation', {
       task,
@@ -160,7 +172,9 @@ export class PromptEngineeringHelper {
     codeSnippet: string,
     analysisType: 'security' | 'performance' | 'quality' | 'all' = 'all',
   ): string {
-    this.logger.debug(`Building code analysis prompt for type: ${analysisType}`);
+    this.logger.debug(
+      `Building code analysis prompt for type: ${analysisType}`,
+    );
 
     return this.getPromptFromTemplate('code-analysis', {
       codeSnippet,
@@ -175,11 +189,7 @@ export class PromptEngineeringHelper {
    * @param newInput Nova entrada para processamento
    * @returns Prompt formatado com exemplos
    */
-  buildFewShotPrompt(
-    task: string,
-    examples: string,
-    newInput: string,
-  ): string {
+  buildFewShotPrompt(task: string, examples: string, newInput: string): string {
     this.logger.debug(`Building few-shot prompt with examples`);
 
     return this.getPromptFromTemplate('few-shot-learning', {
@@ -232,7 +242,9 @@ export class PromptEngineeringHelper {
     code: string,
     documentationType: 'api' | 'class' | 'comments' | 'swagger' = 'comments',
   ): string {
-    this.logger.debug(`Building documentation prompt for type: ${documentationType}`);
+    this.logger.debug(
+      `Building documentation prompt for type: ${documentationType}`,
+    );
 
     const templateName = `documentation-${documentationType}`;
 

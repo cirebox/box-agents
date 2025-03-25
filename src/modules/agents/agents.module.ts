@@ -4,8 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 
 // Controllers
 import { AgentsController } from './controllers/http.controller';
-// Temporariamente comentado até que você implemente o controller MQ
-// import { AgentsMqController } from './controllers/mq.controller';
+import { AgentsMqController } from './controllers/mq.controller';
 
 // Services
 import { AgentManagerService } from './services/agent-manager.service';
@@ -23,11 +22,7 @@ import { SharedModule } from 'src/shared/shared.module';
 
 @Module({
   imports: [ConfigModule, AIProviderModule, SharedModule],
-  controllers: [
-    AgentsController,
-    // Temporariamente comentado
-    // AgentsMqController,
-  ],
+  controllers: [AgentsController, AgentsMqController],
   providers: [
     // Serviços principais
     AgentManagerService,
@@ -52,4 +47,4 @@ import { SharedModule } from 'src/shared/shared.module';
     ExecuteTaskService,
   ],
 })
-export class AgentsModule { }
+export class AgentsModule {}

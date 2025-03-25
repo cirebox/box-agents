@@ -4,10 +4,14 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './providers/prisma.service';
 import { AgentPrismaRepository } from './repositories/prisma-orm/agent.repository';
 import { PromptEngineeringHelper } from './helpers/prompt-engineering.helper';
+import { RabbitMQModule } from './providers/rabbitmq/rabbitmq.module';
 
 @Global()
 @Module({
-  imports: [ConfigModule],
+  imports: [
+    ConfigModule,
+    RabbitMQModule.register(['agents', 'crews', 'tasks']),
+  ],
   providers: [
     PrismaService,
     {
@@ -25,4 +29,4 @@ import { PromptEngineeringHelper } from './helpers/prompt-engineering.helper';
     PromptEngineeringHelper,
   ],
 })
-export class SharedModule { }
+export class SharedModule {}
