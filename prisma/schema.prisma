@@ -1,0 +1,96 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Agent {
+  id              String   @id
+  role            String
+  goal            String
+  backstory       String
+  tools           String? // JSON string
+  allowDelegation Boolean  @default(false)
+  modelName       String   @default("gpt-4")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relacionamentos
+  crews CrewAgent[]
+  tasks TaskExecution[]
+}
+
+model Crew {
+  id          String   @id
+  name        String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  agents     CrewAgent[]
+  tasks      CrewTask[]
+  executions TaskExecution[]
+}
+
+model CrewAgent {
+  id        String   @id @default(uuid())
+  crewId    String
+  agentId   String
+  createdAt DateTime @default(now())
+
+  // Relacionamentos
+  crew  Crew  @relation(fields: [crewId], references: [id], onDelete: Cascade)
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@unique([crewId, agentId])
+}
+
+model Task {
+  id             String   @id
+  description    String
+  expectedOutput String
+  context        String? // JSON string
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relacionamentos
+  crews      CrewTask[]
+  executions TaskExecution[]
+}
+
+model CrewTask {
+  id        String   @id @default(uuid())
+  crewId    String
+  taskId    String
+  createdAt DateTime @default(now())
+
+  // Relacionamentos
+  crew Crew @relation(fields: [crewId], references: [id], onDelete: Cascade)
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@unique([crewId, taskId])
+}
+
+model TaskExecution {
+  id            String    @id @default(uuid())
+  crewId        String
+  taskId        String
+  agentId       String
+  input         String? // JSON string
+  output        String? // Output result
+  success       Boolean   @default(false)
+  executionTime Int // in milliseconds
+  metadata      String? // JSON string
+  startedAt     DateTime  @default(now())
+  finishedAt    DateTime?
+
+  // Relacionamentos
+  crew  Crew  @relation(fields: [crewId], references: [id])
+  task  Task  @relation(fields: [taskId], references: [id])
+  agent Agent @relation(fields: [agentId], references: [id])
+}
