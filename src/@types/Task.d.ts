@@ -12,6 +12,8 @@ declare namespace Task {
     dependencies?: string[]; // IDs de tarefas que precisam ser concluídas antes
     tags?: string[];
     templateId?: string; // Referência para um template de prompt
+    createdAt?: Date;
+    updatedAt?: Date;
   }
 
   interface Execution {
@@ -32,11 +34,10 @@ declare namespace Task {
   }
 
   interface ExecutionMetrics {
-    tokenCount?: number;
-    promptTokens?: number;
-    completionTokens?: number;
-    totalCost?: number;
-    latency?: number;
+    executionTime?: number;
+    memoryUsage?: number;
+    tokensUsed?: number;
+    [key: string]: any;
   }
 
   interface ExecutionLog {

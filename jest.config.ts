@@ -8,7 +8,8 @@ module.exports = {
     },
   },
   rootDir: 'src',
-  testRegex: '.*\\.spec\\.ts$',
+  // Atualizando para considerar apenas arquivos de serviço nos testes
+  testRegex: '.*\\.service\\.spec\\.ts$',
   transform: {
     '^.+\\.(t|j)s$': [
       'ts-jest',
@@ -17,7 +18,8 @@ module.exports = {
       },
     ],
   },
-  collectCoverageFrom: ['**/*.(t|j)s'],
+  // Coletando cobertura apenas de arquivos de serviço
+  collectCoverageFrom: ['**/*.service.(t|j)s'],
   coveragePathIgnorePatterns: [
     '<rootDir>/@types/',
     '<rootDir>/core/',

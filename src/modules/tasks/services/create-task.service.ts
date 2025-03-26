@@ -4,7 +4,8 @@ import { ITaskRepository } from 'src/shared/repositories/interfaces/itask.reposi
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { randomUUID } from 'crypto';
 
-interface CreateTaskParams {
+export interface CreateTaskParams {
+  // Exportando a interface
   description: string;
   expectedOutput?: string;
   context?: Record<string, any>;

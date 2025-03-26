@@ -3,42 +3,38 @@ import { Module, Global } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './providers/prisma.service';
 import { AgentPrismaRepository } from './repositories/prisma-orm/agent.repository';
+import { TaskPrismaRepository } from './repositories/prisma-orm/task.repository';
 import { PromptEngineeringHelper } from './helpers/prompt-engineering.helper';
 import { RabbitMQModule } from './providers/rabbitmq/rabbitmq.module';
-import { TaskPrismaRepository } from './repositories/prisma-orm/task.repository';
 import { AIProviderModule } from './providers/ai-provider.module';
+
+const repositories: Array<{
+  provide: string;
+  useClass: any;
+}> = [
+  {
+    provide: 'IAgentRepository',
+    useClass: AgentPrismaRepository,
+  },
+  {
+    provide: 'ITaskRepository',
+    useClass: TaskPrismaRepository,
+  },
+];
 
 @Global()
 @Module({
   imports: [
     ConfigModule,
-    RabbitMQModule.register(['agents', 'crews', 'tasks']),
-  ],
-  providers: [
-    PrismaService,
-    {
-      provide: 'IAgentRepository',
-      useClass: AgentPrismaRepository,
-    },
-    {
-      provide: 'ITaskRepository',
-      useClass: TaskPrismaRepository,
-    },
+    RabbitMQModule.register(), // Removendo os argumentos
     AIProviderModule,
-    PromptEngineeringHelper,
   ],
+  providers: [PrismaService, ...repositories, PromptEngineeringHelper],
   exports: [
     PrismaService,
-    {
-      provide: 'IAgentRepository',
-      useClass: AgentPrismaRepository,
-    },
-    {
-      provide: 'ITaskRepository',
-      useClass: TaskPrismaRepository,
-    },
-    AIProviderModule,
+    ...repositories,
     PromptEngineeringHelper,
+    AIProviderModule,
   ],
 })
-export class SharedModule { }
+export class SharedModule {}

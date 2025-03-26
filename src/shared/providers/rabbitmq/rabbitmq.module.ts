@@ -7,7 +7,7 @@ import { RabbitMQHelper } from './rabbitmq.helper';
 
 @Module({})
 export class RabbitMQModule {
-  static register(queues: string[] = []): DynamicModule {
+  static register(): DynamicModule {
     return {
       module: RabbitMQModule,
       imports: [

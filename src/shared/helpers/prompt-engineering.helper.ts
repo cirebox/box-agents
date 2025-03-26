@@ -4,17 +4,6 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 /**
- * Interface para as opções de geração de prompt
- */
-interface PromptOptions {
-  systemMessage?: string;
-  temperature?: number;
-  examples?: { input: string; output: string }[];
-  format?: string;
-  maxTokens?: number;
-}
-
-/**
  * Interface para construção de prompt com Chain-of-Thought
  */
 interface ChainOfThoughtOptions {

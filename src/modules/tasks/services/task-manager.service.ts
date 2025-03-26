@@ -268,7 +268,7 @@ export class TaskManagerService {
 
     try {
       // Usar PromptEngineeringHelper para construir um prompt de análise
-      const prompt = this.promptHelper.buildChainOfThoughtPrompt({
+      this.promptHelper.buildChainOfThoughtPrompt({
         question: `Analisar a seguinte tarefa: "${description}"${
           context ? ` com o contexto adicional: ${JSON.stringify(context)}` : ''
         }`,
@@ -291,10 +291,10 @@ export class TaskManagerService {
         domain: this.inferDomain(description),
         complexity: this.estimateComplexity(description),
         requiredKnowledge: this.identifyRequiredKnowledge(description, context),
-        subtasks: this.suggestSubtasks(description, context),
+        subtasks: this.suggestSubtasks(description), // Removendo o segundo argumento
         estimatedTime: this.estimateExecutionTime(description),
-        dependencies: this.identifyDependencies(description, context),
-        recommendedAgents: this.recommendAgents(description, context),
+        dependencies: this.identifyDependencies(description), // Removendo o segundo argumento
+        recommendedAgents: this.recommendAgents(description), // Removendo o segundo argumento
       };
 
       this.logger.log(`Task analysis completed`);
@@ -402,10 +402,7 @@ export class TaskManagerService {
     return Array.from(knowledge);
   }
 
-  private suggestSubtasks(
-    description: string,
-    context?: Record<string, any>,
-  ): string[] {
+  private suggestSubtasks(description: string): string[] {
     // Na implementação real, isso seria feito por um modelo de IA
     const subtasks = [];
 
@@ -451,10 +448,7 @@ export class TaskManagerService {
     }
   }
 
-  private identifyDependencies(
-    description: string,
-    context?: Record<string, any>,
-  ): string[] {
+  private identifyDependencies(description: string): string[] {
     const dependencies = [];
 
     // Dependências comuns baseadas no domínio
@@ -471,10 +465,7 @@ export class TaskManagerService {
     return dependencies;
   }
 
-  private recommendAgents(
-    description: string,
-    context?: Record<string, any>,
-  ): string[] {
+  private recommendAgents(description: string): string[] {
     const domain = this.inferDomain(description);
 
     switch (domain) {

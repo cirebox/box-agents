@@ -28,14 +28,7 @@ import { AgentsMqController } from './controllers/mq.controller';
     ConfigModule,
     AIProviderModule,
     SharedModule,
-    RabbitMQModule.register([
-      'agents.create',
-      'agents.execute',
-      'crews.create',
-      'tasks.execute',
-      'backend.tasks',
-      'fullstack.tasks',
-    ]),
+    RabbitMQModule.register(), // Removendo os argumentos
   ],
   controllers: [AgentsController, AgentsMqController],
   providers: [

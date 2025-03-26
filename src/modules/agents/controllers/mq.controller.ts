@@ -27,6 +27,9 @@ export class AgentsMqController {
 
   @MessagePattern('create_agent')
   async createAgent(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for create_agent: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received create_agent request via MQ: ${JSON.stringify(data)}`,
     );
@@ -57,6 +60,9 @@ export class AgentsMqController {
 
   @MessagePattern('create_crew')
   async createCrew(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for create_crew: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received create_crew request via MQ: ${JSON.stringify(data)}`,
     );
@@ -84,6 +90,9 @@ export class AgentsMqController {
 
   @MessagePattern('execute_task')
   async executeTask(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for execute_task: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received execute_task request via MQ: ${JSON.stringify(data)}`,
     );
@@ -111,6 +120,9 @@ export class AgentsMqController {
 
   @MessagePattern('execute_backend_task')
   async executeBackendTask(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for execute_backend_task: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received execute_backend_task request via MQ: ${JSON.stringify(data)}`,
     );
@@ -140,6 +152,9 @@ export class AgentsMqController {
 
   @MessagePattern('execute_fullstack_task')
   async executeFullStackTask(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for execute_fullstack_task: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received execute_fullstack_task request via MQ: ${JSON.stringify(data)}`,
     );
@@ -172,6 +187,9 @@ export class AgentsMqController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ) {
+    this.logger.debug(
+      `Payload received for agent_task_completed: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received agent_task_completed event: ${JSON.stringify(data)}`,
     );
@@ -196,6 +214,9 @@ export class AgentsMqController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ) {
+    this.logger.debug(
+      `Payload received for agent_task_failed: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received agent_task_failed event: ${JSON.stringify(data)}`,
     );

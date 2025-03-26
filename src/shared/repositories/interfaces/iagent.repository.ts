@@ -1,8 +1,8 @@
 // src/shared/repositories/interfaces/iagent.repository.ts
 export interface IAgentRepository {
-  create(data: any): Promise<any>;
-  update(id: string, data: any): Promise<any>;
+  findById(id: string): Promise<Agent.Config | null>;
+  create(agent: Agent.Config): Promise<Agent.Config>;
+  update(id: string, agent: Partial<Agent.Config>): Promise<Agent.Config>;
   delete(id: string): Promise<void>;
-  findById(id: string): Promise<any>;
-  findAll(filters?: Record<string, any>): Promise<any[]>;
+  findAll(filters?: Record<string, any>): Promise<Agent.Config[]>;
 }

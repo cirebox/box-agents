@@ -33,6 +33,9 @@ export class TasksMqController {
 
   @MessagePattern('create_task')
   async createTask(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for create_task: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received create_task request via MQ: ${JSON.stringify(data)}`,
     );
@@ -67,6 +70,9 @@ export class TasksMqController {
 
   @MessagePattern('execute_task')
   async executeTask(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for execute_task: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received execute_task request via MQ: ${JSON.stringify(data)}`,
     );
@@ -95,6 +101,7 @@ export class TasksMqController {
 
   @MessagePattern('get_task')
   async getTask(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(`Payload received for get_task: ${JSON.stringify(data)}`);
     this.logger.log(
       `Received get_task request via MQ: ${JSON.stringify(data)}`,
     );
@@ -118,6 +125,9 @@ export class TasksMqController {
 
   @MessagePattern('find_tasks')
   async findTasks(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for find_tasks: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received find_tasks request via MQ: ${JSON.stringify(data)}`,
     );
@@ -141,6 +151,9 @@ export class TasksMqController {
 
   @MessagePattern('update_task')
   async updateTask(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for update_task: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received update_task request via MQ: ${JSON.stringify(data)}`,
     );
@@ -164,6 +177,9 @@ export class TasksMqController {
 
   @MessagePattern('delete_task')
   async deleteTask(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for delete_task: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received delete_task request via MQ: ${JSON.stringify(data)}`,
     );
@@ -187,6 +203,9 @@ export class TasksMqController {
 
   @MessagePattern('get_task_execution')
   async getTaskExecution(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for get_task_execution: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received get_task_execution request via MQ: ${JSON.stringify(data)}`,
     );
@@ -214,6 +233,9 @@ export class TasksMqController {
 
   @MessagePattern('get_task_executions')
   async getTaskExecutions(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for get_task_executions: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received get_task_executions request via MQ: ${JSON.stringify(data)}`,
     );
@@ -241,6 +263,9 @@ export class TasksMqController {
 
   @MessagePattern('cancel_execution')
   async cancelExecution(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for cancel_execution: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received cancel_execution request via MQ: ${JSON.stringify(data)}`,
     );
@@ -264,6 +289,9 @@ export class TasksMqController {
 
   @MessagePattern('retry_execution')
   async retryExecution(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for retry_execution: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received retry_execution request via MQ: ${JSON.stringify(data)}`,
     );
@@ -289,6 +317,9 @@ export class TasksMqController {
 
   @MessagePattern('batch_create_tasks')
   async batchCreateTasks(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for batch_create_tasks: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received batch_create_tasks request via MQ: ${JSON.stringify(data)}`,
     );
@@ -312,6 +343,9 @@ export class TasksMqController {
 
   @MessagePattern('analyze_task')
   async analyzeTask(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for analyze_task: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received analyze_task request via MQ: ${JSON.stringify(data)}`,
     );
@@ -340,6 +374,9 @@ export class TasksMqController {
 
   @EventPattern('task_created')
   async handleTaskCreated(@Payload() data: any, @Ctx() context: RmqContext) {
+    this.logger.debug(
+      `Payload received for task_created: ${JSON.stringify(data)}`,
+    );
     this.logger.log(`Received task_created event: ${JSON.stringify(data)}`);
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
@@ -360,6 +397,9 @@ export class TasksMqController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ) {
+    this.logger.debug(
+      `Payload received for task_execution_started: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received task_execution_started event: ${JSON.stringify(data)}`,
     );
@@ -384,6 +424,9 @@ export class TasksMqController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ) {
+    this.logger.debug(
+      `Payload received for task_execution_completed: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received task_execution_completed event: ${JSON.stringify(data)}`,
     );
@@ -413,6 +456,9 @@ export class TasksMqController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ) {
+    this.logger.debug(
+      `Payload received for task_execution_failed: ${JSON.stringify(data)}`,
+    );
     this.logger.log(
       `Received task_execution_failed event: ${JSON.stringify(data)}`,
     );
