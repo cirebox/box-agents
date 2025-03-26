@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import * as compression from 'compression';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SWAGGER_CONFIG } from './swagger/swagger.config';
-import { createSwaggerDocumentation } from 'src/swagger/swagger.create-document';
+import { createSwaggerDocumentation } from './swagger/swagger.create-document';
 import * as express from 'express';
 import { join } from 'path';
 import * as basicAuth from 'express-basic-auth';
@@ -43,13 +43,19 @@ async function bootstrap() {
   app.use(compression());
 
   const users = process.env.DOCS_USER;
-  app.use(
-    '/docs*',
-    basicAuth({
-      challenge: true,
-      users: JSON.parse(users as string),
-    }),
-  );
+  if (users) {
+    app.use(
+      '/docs*',
+      basicAuth({
+        challenge: true,
+        users: JSON.parse(users),
+      }),
+    );
+  } else {
+    console.warn(
+      'DOCS_USER environment variable not set, API documentation will be public.',
+    );
+  }
 
   const start = process.env.NODE_ENV;
   if (start === 'development') {

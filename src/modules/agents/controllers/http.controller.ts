@@ -1,3 +1,4 @@
+// src/modules/agents/controllers/http.controller.ts
 import {
   Controller,
   Post,
@@ -153,7 +154,7 @@ export class AgentsController {
     }
   }
 
-  @Post('crews/:id/tasks/:taskId')
+  @Post('crews/:crewId/tasks/:taskId')
   @ApiOperation({ summary: 'Execute a task with a crew' })
   @ApiResponse({
     status: 200,
@@ -164,7 +165,7 @@ export class AgentsController {
     },
   })
   @ApiInternalServerErrorResponse({ description: 'Failed to execute task' })
-  @ApiParam({ name: 'id', type: 'string', description: 'Crew ID' })
+  @ApiParam({ name: 'crewId', type: 'string', description: 'Crew ID' })
   @ApiParam({ name: 'taskId', type: 'string', description: 'Task ID' })
   @ApiBody({
     schema: {
@@ -174,7 +175,7 @@ export class AgentsController {
     },
   })
   async executeTask(
-    @Param('id') crewId: string,
+    @Param('crewId') crewId: string,
     @Param('taskId') taskId: string,
     @Body() input: Record<string, any>,
   ) {

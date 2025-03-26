@@ -8,6 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Modelos para Agentes (existentes)
 model Agent {
   id              String   @id
   role            String
@@ -20,8 +21,9 @@ model Agent {
   updatedAt       DateTime @updatedAt
 
   // Relacionamentos
-  crews CrewAgent[]
-  tasks TaskExecution[]
+  crews         CrewAgent[]
+  executions    TaskExecution[]
+  assignedTasks Task[] // Tarefas designadas a este agente
 }
 
 model Crew {
@@ -32,9 +34,10 @@ model Crew {
   updatedAt   DateTime @updatedAt
 
   // Relacionamentos
-  agents     CrewAgent[]
-  tasks      CrewTask[]
-  executions TaskExecution[]
+  agents        CrewAgent[]
+  tasks         CrewTask[]
+  executions    TaskExecution[]
+  assignedTasks Task[] // Tarefas designadas a esta equipe
 }
 
 model CrewAgent {
@@ -50,17 +53,37 @@ model CrewAgent {
   @@unique([crewId, agentId])
 }
 
+// Modelos para Task (novos)
 model Task {
-  id             String   @id
-  description    String
-  expectedOutput String
-  context        String? // JSON string
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id              String    @id
+  description     String
+  expectedOutput  String?
+  context         String? // JSON string
+  priority        String    @default("medium") // 'low', 'medium', 'high', 'critical'
+  deadline        DateTime?
+  assignedAgentId String?
+  assignedCrewId  String?
+  dependencies    String? // JSON string array
+  tags            String? // JSON string array
+  templateId      String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   // Relacionamentos
-  crews      CrewTask[]
   executions TaskExecution[]
+  crews      CrewTask[]
+
+  // Relacionamentos com modelos existentes
+  assignedAgent Agent?        @relation(fields: [assignedAgentId], references: [id])
+  assignedCrew  Crew?         @relation(fields: [assignedCrewId], references: [id])
+  template      TaskTemplate? @relation(fields: [templateId], references: [id])
+
+  // Índices para melhorar performance em consultas comuns
+  @@index([createdAt])
+  @@index([priority])
+  @@index([assignedAgentId])
+  @@index([assignedCrewId])
+  @@index([templateId])
 }
 
 model CrewTask {
@@ -78,19 +101,49 @@ model CrewTask {
 
 model TaskExecution {
   id            String    @id @default(uuid())
-  crewId        String
   taskId        String
   agentId       String
-  input         String? // JSON string
-  output        String? // Output result
-  success       Boolean   @default(false)
-  executionTime Int // in milliseconds
-  metadata      String? // JSON string
+  crewId        String?
+  input         String // JSON string
+  output        String?
+  status        String // 'pending', 'in-progress', 'completed', 'failed', 'cancelled', 'waiting', 'retrying'
+  executionTime Int? // em milissegundos
+  error         String?
+  attempts      Int       @default(1)
+  logs          String // JSON string array
+  metrics       String? // JSON string
   startedAt     DateTime  @default(now())
   finishedAt    DateTime?
 
   // Relacionamentos
-  crew  Crew  @relation(fields: [crewId], references: [id])
-  task  Task  @relation(fields: [taskId], references: [id])
+  task  Task  @relation(fields: [taskId], references: [id], onDelete: Cascade)
   agent Agent @relation(fields: [agentId], references: [id])
+  crew  Crew? @relation(fields: [crewId], references: [id])
+
+  // Índices para consultas comuns
+  @@index([status])
+  @@index([startedAt])
+  @@index([taskId])
+  @@index([agentId])
+  @@index([crewId])
+}
+
+model TaskTemplate {
+  id               String   @id @default(uuid())
+  name             String
+  description      String
+  promptTemplate   String   @db.Text
+  defaultModelName String?
+  parameters       String // JSON string array
+  category         String
+  tags             String? // JSON string array
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relacionamentos
+  tasks Task[]
+
+  // Índices
+  @@index([category])
+  @@index([name])
 }

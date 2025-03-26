@@ -4,7 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 
 // Controllers
 import { AgentsController } from './controllers/http.controller';
-import { AgentsMqController } from './controllers/mq.controller';
+// Temporariamente comentado até que você implemente o controller MQ
+// import { AgentsMqController } from './controllers/mq.controller';
 
 // Services
 import { AgentManagerService } from './services/agent-manager.service';
@@ -19,9 +20,23 @@ import { CreateCrewService } from './services/create-crew.service';
 import { ExecuteTaskService } from './services/execute-task.service';
 import { AIProviderModule } from 'src/shared/providers/ai-provider.module';
 import { SharedModule } from 'src/shared/shared.module';
+import { RabbitMQModule } from 'src/shared/providers/rabbitmq/rabbitmq.module';
+import { AgentsMqController } from './controllers/mq.controller';
 
 @Module({
-  imports: [ConfigModule, AIProviderModule, SharedModule],
+  imports: [
+    ConfigModule,
+    AIProviderModule,
+    SharedModule,
+    RabbitMQModule.register([
+      'agents.create',
+      'agents.execute',
+      'crews.create',
+      'tasks.execute',
+      'backend.tasks',
+      'fullstack.tasks',
+    ]),
+  ],
   controllers: [AgentsController, AgentsMqController],
   providers: [
     // Serviços principais
@@ -38,12 +53,17 @@ import { SharedModule } from 'src/shared/shared.module';
     ExecuteTaskService,
   ],
   exports: [
+    // Serviços principais
     AgentManagerService,
+    AgentFactoryService,
     AgentExecutorService,
 
-    // Exportar serviços de caso de uso para uso por outros módulos
+    // Serviços específicos para casos de uso
     CreateAgentService,
+    UpdateAgentService,
+    DeleteAgentService,
     FindAgentService,
+    CreateCrewService,
     ExecuteTaskService,
   ],
 })

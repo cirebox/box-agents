@@ -1,6 +1,10 @@
 # Sistema de Agentes de IA
 
-Este projeto implementa um sistema modular para criação, gerenciamento e execução de agentes de IA, seguindo os princípios SOLID e boas práticas de desenvolvimento com NestJS, TypeScript e arquitetura modular.
+Um sistema modular para criação, gerenciamento e execução de agentes de IA, seguindo os princípios SOLID e boas práticas de desenvolvimento com NestJS, TypeScript e arquitetura modular.
+
+![Versão](https://img.shields.io/badge/versão-0.0.1-blue.svg)
+![Node](https://img.shields.io/badge/node-v18.18.0+-green.svg)
+![NestJS](https://img.shields.io/badge/nestjs-v11.0.0-red.svg)
 
 ## 🚀 Tecnologias
 
@@ -10,24 +14,41 @@ Este projeto implementa um sistema modular para criação, gerenciamento e execu
 - **Mensageria**: RabbitMQ
 - **Documentação**: Swagger
 - **Validação**: class-validator / class-transformer
+- **IA**: OpenAI API, Ollama
 - **Containerização**: Docker + Kubernetes
 
 ## 📋 Funcionalidades
 
-- Criação e gerenciamento de agentes de IA com papéis específicos
-- Formação de equipes (crews) de agentes para execução de tarefas complexas
-- Interface REST API para interação com os agentes
-- Integração com RabbitMQ para processamento assíncrono de tarefas
-- Suporte a múltiplos provedores de IA (OpenAI, Ollama)
+- **Criação e Gerenciamento de Agentes**:
+  - Definição de agentes especializados com papéis específicos
+  - Configuração de objetivos e contexto para cada agente
+  - Personalização com ferramentas específicas para cada necessidade
+  
+- **Equipes de Agentes (Crews)**:
+  - Formação de equipes colaborativas para tarefas complexas
+  - Delegação e coordenação entre agentes
+  - Execução paralela ou sequencial de subtarefas
+
+- **Tarefas Especializadas**:
+  - Tarefas de desenvolvimento backend
+  - Tarefas de desenvolvimento frontend
+  - Tarefas fullstack integradas
+  - Análise e design de banco de dados
+
+- **Integrações**:
+  - Suporte a múltiplos provedores de IA (OpenAI, Ollama)
+  - Interface REST API para interação
+  - Processamento assíncrono via RabbitMQ
+  - Webhooks para notificações de eventos
 
 ## 🏗️ Arquitetura
 
-O projeto segue uma arquitetura modular com separação clara de responsabilidades:
+O projeto segue uma arquitetura modular com clara separação de responsabilidades, seguindo o padrão recomendado para aplicações NestJS:
 
 ```
 src/
 ├── @types/               # Definições de tipos globais
-├── core/                 # Funcionalidades centrais
+├── core/                 # Funcionalidades centrais e decoradores
 ├── modules/              # Módulos da aplicação
 │   └── agents/           # Módulo de gerenciamento de agentes
 │       ├── controllers/  # Controladores HTTP e MQ
@@ -36,136 +57,127 @@ src/
 │       └── tests/        # Testes unitários
 └── shared/               # Componentes compartilhados
     ├── config/           # Configurações
-    ├── providers/        # Provedores externos
+    ├── helpers/          # Helpers utilitários
+    ├── providers/        # Provedores externos (IA, etc)
     └── repositories/     # Acesso a dados
 ```
 
-## 🚦 Fluxo de Trabalho dos Agentes
-
-1. **Criação de Agentes**:
-   - Cada agente tem um papel, objetivo e background específicos
-   - Suporte a ferramentas personalizadas para cada agente
-
-2. **Formação de Equipes (Crews)**:
-   - Agentes podem ser agrupados em equipes para colaboração
-   - Cada equipe tem um conjunto de tarefas definidas
-
-3. **Execução de Tarefas**:
-   - As tarefas são atribuídas a agentes específicos
-   - Resultados são disponibilizados via API
-
-## 💻 Exemplos de Uso
-
-### Criação de um Agente
-
-```typescript
-// HTTP POST /agents
-{
-  "role": "Backend Developer",
-  "goal": "Criar APIs RESTful eficientes usando NestJS",
-  "backstory": "Especialista em desenvolvimento backend com NestJS e TypeScript",
-  "tools": [
-    {
-      "name": "generateController",
-      "description": "Gera um controller NestJS"
-    }
-  ]
-}
-```
-
-### Criação de uma Equipe (Crew)
-
-```typescript
-// HTTP POST /agents/crews
-{
-  "agents": [
-    {
-      "role": "Backend Developer",
-      "goal": "Criar APIs NestJS",
-      "backstory": "Especialista em NestJS"
-    },
-    {
-      "role": "Frontend Developer",
-      "goal": "Desenvolver interfaces com React",
-      "backstory": "Especialista em React e Next.js"
-    }
-  ],
-  "tasks": [
-    {
-      "id": "create-feature",
-      "description": "Implementar funcionalidade de gerenciamento de usuários",
-      "expectedOutput": "Código completo da API e interface"
-    }
-  ]
-}
-```
-
-### Execução de Tarefa Backend
-
-```typescript
-// HTTP POST /agents/backend-task
-{
-  "resource": "users",
-  "endpoints": ["getAll", "getById", "create", "update", "delete"],
-  "methods": ["findAll", "findById", "create", "update", "remove"]
-}
-```
-
-## ⚙️ Instalação e Configuração
+## ⚙️ Requisitos e Instalação
 
 ### Pré-requisitos
 
-- Node.js 18+
-- PostgreSQL
-- RabbitMQ
+- Node.js 18.18.0+
+- PostgreSQL 13+
+- RabbitMQ 3.8+
 - Docker (opcional)
 
 ### Instalação
 
-1. Clone o repositório
+1. Clone o repositório:
    ```bash
    git clone https://github.com/seu-usuario/sistema-agentes-ia.git
    cd sistema-agentes-ia
    ```
 
-2. Instale as dependências
+2. Instale as dependências:
    ```bash
-   npm install
+   npm install --legacy-peer-deps
    ```
 
-3. Configure as variáveis de ambiente
+3. Configure as variáveis de ambiente:
    ```bash
    cp .env.example .env
    # Edite o arquivo .env com suas configurações
    ```
 
-4. Execute as migrações do Prisma
+4. Execute as migrações do Prisma:
    ```bash
    npx prisma migrate dev
    ```
 
-5. Inicie a aplicação
+5. Inicie a aplicação:
    ```bash
    npm run start:dev
    ```
 
-### Docker
+### Utilizando Docker
 
 ```bash
-# Construir a imagem
-docker build -t sistema-agentes-ia .
-
-# Executar o container
+# Construir e iniciar os containers
 docker-compose up -d
+
+# Executar migrações
+docker-compose exec app npx prisma migrate dev
 ```
 
-## 📚 Documentação
+## 🚦 Início Rápido
 
-A documentação da API está disponível através do Swagger:
+### 1. Criar um Agente
+
+```bash
+curl -X POST http://localhost:3000/agents \
+  -H "Content-Type: application/json" \
+  -d '{
+    "role": "Backend Developer",
+    "goal": "Criar APIs RESTful eficientes usando NestJS",
+    "backstory": "Especialista em desenvolvimento backend com NestJS e TypeScript",
+    "tools": [
+      {
+        "name": "generateController",
+        "description": "Gera um controller NestJS"
+      }
+    ]
+  }'
+```
+
+### 2. Criar uma Equipe (Crew)
+
+```bash
+curl -X POST http://localhost:3000/agents/crews \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agents": [
+      {
+        "role": "Backend Developer",
+        "goal": "Criar APIs NestJS",
+        "backstory": "Especialista em NestJS"
+      },
+      {
+        "role": "Frontend Developer",
+        "goal": "Desenvolver interfaces com React",
+        "backstory": "Especialista em React e Next.js"
+      }
+    ],
+    "tasks": [
+      {
+        "description": "Implementar funcionalidade de gerenciamento de usuários",
+        "expectedOutput": "Código completo da API e interface"
+      }
+    ]
+  }'
+```
+
+### 3. Executar Tarefa Backend
+
+```bash
+curl -X POST http://localhost:3000/agents/backend-task \
+  -H "Content-Type: application/json" \
+  -d '{
+    "resource": "users",
+    "endpoints": ["getAll", "getById", "create", "update", "delete"],
+    "methods": ["findAll", "findById", "create", "update", "remove"]
+  }'
+```
+
+## 📚 Documentação da API
+
+A documentação completa da API está disponível através do Swagger:
 
 ```
 http://localhost:3000/docs
 ```
+
+Para acessar a documentação, utilize as credenciais definidas na variável de ambiente `DOCS_USER`.
 
 ## 🧪 Testes
 
@@ -180,9 +192,24 @@ npm run test:e2e
 npm run test:cov
 ```
 
-## 📄 Licença
+## 🛠️ Comandos Úteis
 
-Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE.md](LICENSE.md) para detalhes.
+```bash
+# Verificação de tipos TypeScript
+npm run type-check
+
+# Formatar código
+npm run format
+
+# Lint
+npm run lint
+
+# Compilar para produção
+npm run build
+
+# Rodar em produção
+npm run start:prod
+```
 
 ## 🤝 Contribuição
 
@@ -191,3 +218,29 @@ Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE.md](L
 3. Commit suas mudanças (`git commit -m 'Add: amazing feature'`)
 4. Push para a branch (`git push origin feature/amazing-feature`)
 5. Abra um Pull Request
+
+### Padrões de Commit
+
+Este projeto segue o padrão de commits convencionais. Utilize os prefixos:
+
+- `feat:` Nova funcionalidade
+- `fix:` Correção de bug
+- `docs:` Documentação
+- `style:` Formatação de código
+- `refactor:` Refatoração
+- `test:` Testes
+- `chore:` Tarefas de build, config, etc
+
+## 📄 Licença
+
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE.md](LICENSE.md) para detalhes.
+
+## 🔮 Roadmap
+
+- [ ] Suporte a mais modelos de IA
+- [ ] Interface web para gerenciamento de agentes
+- [ ] Sistema de permissões e autenticação
+- [ ] Integração com ferramentas externas (GitHub, Jira, etc)
+- [ ] Suporte a agentes com memória persistente
+- [ ] Melhorias na delegação entre agentes
+- [ ] Histórico de execuções e análise de desempenho
